@@ -1,12 +1,21 @@
 import requests
 from player import Player
 
+def is_finnish(player):
+    if player.nationality == "FIN":
+        return True
+    else:
+        return False
+
+def points(player):
+    return player.goals + player.assists
+
 def main():
     url = "https://nhlstatisticsforohtu.herokuapp.com/players"
     response = requests.get(url).json()
 
-    print("JSON-muotoinen vastaus:")
-    print(response)
+    #print("JSON-muotoinen vastaus:")
+    #print(response)
 
     players = []
 
@@ -17,6 +26,8 @@ def main():
         players.append(player)
 
     print("Oliot:")
+    players = list(filter(is_finnish, players))
+    players.sort(key=points, reverse=True)
 
     for player in players:
         print(player)
